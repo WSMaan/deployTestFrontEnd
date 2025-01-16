@@ -60,7 +60,7 @@ pipeline {
                         sh '''
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
                         docker push ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:backend
-                        docker push ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend
+                    //    docker push ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend
                         '''
                     }
                 }
@@ -84,12 +84,12 @@ pipeline {
                             kubectl apply -f k8s/backend-deployment.yaml
                             '''
                         }
-                        dir('deployTestFrontEnd') {
-                            git branch: 'master', url: 'https://github.com/WSMaan/deployTestFrontEnd.git', credentialsId: 'GIT_HUB'
-                            sh '''
-                            kubectl apply -f k8s/frontend-deployment.yaml
-                            '''
-                        }
+                       // dir('deployTestFrontEnd') {
+                       //      git branch: 'master', url: 'https://github.com/WSMaan/deployTestFrontEnd.git', credentialsId: 'GIT_HUB'
+                       //      sh '''
+                       //      kubectl apply -f k8s/frontend-deployment.yaml
+                       //      '''
+                       //  }
                     }
                 }
             }
