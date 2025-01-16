@@ -5,6 +5,7 @@ pipeline {
         AWS_REGION = "us-east-2"
         ECR_REPOSITORY_NAME = "examninja"
         BACKEND_DIR = "deployTestBackEnd"
+        FRONTEND_DIR = "deployTestFrontEnd"
         ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         NODE_ENV = "production"
     }
@@ -21,11 +22,9 @@ pipeline {
                 dir('backend') {
                     git branch: 'master', url: 'https://github.com/WSMaan/deployTestBackEnd.git', credentialsId: 'GIT_HUB'
                 }
-                /*
                 dir('frontend') {
                     git branch: 'master', url: 'https://github.com/WSMaan/deployTestFrontEnd.git', credentialsId: 'GIT_HUB'
                 }
-                */
             }
         }
         stage('Build Backend') {
@@ -35,7 +34,6 @@ pipeline {
                 }
             }
         }
-        /*
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
@@ -44,17 +42,14 @@ pipeline {
                 }
             }
         }
-        */
         stage('Build Docker Images') {
             steps {
                 dir('backend') {
                     sh "docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:backend ."
                 }
-                /*
                 dir('frontend') {
                     sh "docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend ."
                 }
-                */
             }
         }
         stage('Push Docker Images to ECR') {
@@ -64,9 +59,7 @@ pipeline {
                         sh '''
                         aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
                         docker push ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:backend
-                        /*
                         docker push ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend
-                        */
                         '''
                     }
                 }
@@ -90,14 +83,12 @@ pipeline {
                             kubectl apply -f k8s/backend-deployment.yaml
                             '''
                         }
-                        /*
                         dir('deployTestFrontEnd') {
-                             git branch: 'master', url: 'https://github.com/WSMaan/deployTestFrontEnd.git', credentialsId: 'GIT_HUB'
-                             sh '''
-                             kubectl apply -f k8s/frontend-deployment.yaml
-                             '''
-                         }
-                         */
+                            git branch: 'master', url: 'https://github.com/WSMaan/deployTestFrontEnd.git', credentialsId: 'GIT_HUB'
+                            sh '''
+                            kubectl apply -f k8s/frontend-deployment.yaml
+                            '''
+                        }
                     }
                 }
             }
