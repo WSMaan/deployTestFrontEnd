@@ -7,6 +7,7 @@ pipeline {
         FRONTEND_DIR = "deployTestFrontEnd"
         BACKEND_DIR = "deployTestBackEnd"
         ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        NODE_ENV = "production" // Add this line
     }
     stages {
         stage('Setup AWS Credentials') {
