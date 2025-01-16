@@ -34,22 +34,22 @@ pipeline {
                 }
             }
         }
-        stage('Build Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npx start'
-                }
-            }
-        }
+        // stage('Build Frontend') {
+        //     steps {
+        //         dir('frontend') {
+        //             sh 'npm install'
+        //             sh 'npx start'
+        //         }
+        //     }
+        // }
         stage('Build Docker Images') {
             steps {
                 dir('backend') {
                     sh "docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:backend ."
                 }
-                dir('frontend') {
-                    sh "docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend ."
-                }
+                // dir('frontend') {
+                //     sh "docker build -t ${ECR_REGISTRY}/${ECR_REPOSITORY_NAME}:frontend ."
+                // }
             }
         }
         stage('Push Docker Images to ECR') {
