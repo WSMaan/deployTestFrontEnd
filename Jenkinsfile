@@ -38,7 +38,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     sh 'npm install'
-                    sh 'npx start'
+                    sh 'npm start'
                 }
             }
         }
